@@ -23,6 +23,21 @@ class EssentialDataForm(FormBase, forms.ModelForm):
             "fetch_offset_timezone",
         ]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        telemetry_system_type = self.data.get('type')
+        # disabling all the fields for UTC time zone if telemetry_system_type is `addupi` then
+        if telemetry_system_type == 'addupi':
+            self.fields['data_timezone'].widget.attrs['disabled'] = True
+            self.fields['fetch_offset_minutes'].widget.attrs['disabled'] = True
+            self.fields['fetch_offset_timezone'].widget.attrs['disabled'] = True
+            self.initial['fetch_offset_minutes'] = ""
+
+            # Set the fields as not required for 'addupi'
+            self.fields['data_timezone'].required = False
+            self.fields['fetch_offset_minutes'].required = False
+            self.fields['fetch_offset_timezone'].required = False
+
 
 class ConnectionDataForm(FormBase):
     device_locator = forms.CharField(required=False)

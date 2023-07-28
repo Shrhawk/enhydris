@@ -44,11 +44,12 @@ class TelemetryAPIClient(TelemetryAPIClientBase):
         from enhydris.telemetry import TelemetryError
 
         if timeseries_end_date is None:
-            timeseries_end_date = dt.datetime(1990, 1, 1)
+            timeseries_end_date = dt.datetime(1990, 1, 1, 0, 0, tzinfo=dt.timezone.utc)
         xmlroot = self._make_request(
             "function=getdata"
             f"&id={sensor_id}"
-            f"&date={timeseries_end_date.isoformat()}"
+            f"&df=time_t"
+            f"&date={int(timeseries_end_date.timestamp())}"
             "&slots=20000"
         )
         result = ""
@@ -58,7 +59,7 @@ class TelemetryAPIClient(TelemetryAPIClientBase):
             if timestamp.startswith("+"):
                 timestamp = prev_timestamp + dt.timedelta(seconds=int(timestamp))
             else:
-                timestamp = dt.datetime.strptime(timestamp, "%Y%m%dT%H:%M:%S")
+                timestamp = dt.datetime.fromtimestamp(int(timestamp))
             s = record.attrib["s"]
             if s != "0":
                 raise TelemetryError(

@@ -24,4 +24,27 @@
       <button class="btn btn-primary" type="submit">{% if seq == max_seq %}{% trans "Finish" %}{% else %}{% trans "Next" %}{% endif %}</button>
     </form>
   </div>
+    <script>
+        // JavaScript code to handle field disabling
+        document.addEventListener('DOMContentLoaded', function () {
+            const typeField = document.getElementById('id_type');
+
+            function handleTypeFieldChange() {
+                const selectedType = typeField.value;
+                if (selectedType === 'addupi') {
+                    document.getElementById('id_data_timezone').disabled = true;
+                    document.getElementById('id_fetch_offset_minutes').disabled = true;
+                    document.getElementById('id_fetch_offset_timezone').disabled = true;
+                    document.getElementById('id_fetch_offset_minutes').value = 0;
+                } else {
+                    document.getElementById('id_data_timezone').disabled = false;
+                    document.getElementById('id_fetch_offset_minutes').disabled = false;
+                    document.getElementById('id_fetch_offset_timezone').disabled = false;
+                }
+            }
+
+            handleTypeFieldChange();
+            typeField.addEventListener('change', handleTypeFieldChange);
+        });
+    </script>
 {% endblock %}

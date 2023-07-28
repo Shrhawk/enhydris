@@ -132,6 +132,10 @@ class TelemetryWizardView(PermissionRequiredMixin, View):
         }
         other_config = {k: v for k, v in config.items() if not k.startswith("sensor_")}
         Telemetry.objects.filter(station=self.station).delete()
+
+        if other_config.get('type') == 'addupi':
+            other_config['fetch_offset_minutes'] = 0
+
         telemetry = Telemetry.objects.create(station=self.station, **other_config)
         for key, value in sensors_config.items():
             remote_sensor_id = key.partition("_")[2]

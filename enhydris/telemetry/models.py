@@ -4,6 +4,7 @@ import subprocess
 import sys
 import zoneinfo
 from io import StringIO
+from django import forms
 from traceback import print_tb
 
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -11,6 +12,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 import iso8601
+from django.forms.widgets import TextInput
 
 import enhydris
 from enhydris.models import Station, Timeseries, TimeseriesGroup
@@ -30,7 +32,6 @@ timezones = zoneinfo.available_timezones()
 timezone_choices = [(zone, fix_zone_name(zone)) for zone in timezones]
 timezone_choices.sort()
 
-
 class Telemetry(models.Model):
     station = models.OneToOneField(Station, on_delete=models.CASCADE)
     type = models.CharField(
@@ -41,6 +42,7 @@ class Telemetry(models.Model):
             "The type of the system from which the data is to be fetched. "
             "If unlisted, it might mean that it is currently unsupported."
         ),
+
     )
     data_timezone = models.CharField(
         max_length=35,
@@ -60,6 +62,7 @@ class Telemetry(models.Model):
         help_text=_("E.g. 60 to fetch data every 60 minutes, 1440 for once a day"),
     )
     fetch_offset_minutes = models.PositiveSmallIntegerField(
+        default=0,
         validators=[MaxValueValidator(1339)],
         verbose_name=_("Fetch time offset, in minutes"),
         help_text=_(
