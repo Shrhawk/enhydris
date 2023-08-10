@@ -135,11 +135,9 @@ class EssentialDataFormTestCase(TestCase):
 
         self.assertTrue('disabled' in form.fields["data_timezone"].widget.attrs)
         self.assertTrue('disabled' in form.fields["fetch_offset_minutes"].widget.attrs)
-        self.assertTrue('disabled' in form.fields["fetch_offset_timezone"].widget.attrs)
 
         self.assertTrue(form.fields["data_timezone"].widget.attrs['disabled'])
         self.assertTrue(form.fields["fetch_offset_minutes"].widget.attrs['disabled'])
-        self.assertTrue(form.fields["fetch_offset_timezone"].widget.attrs['disabled'])
 
     def test_fields_enabled_for_other_types(self):
         self.form_args["type"] = "MeteoView2"
@@ -147,7 +145,6 @@ class EssentialDataFormTestCase(TestCase):
 
         self.assertFalse(form.fields["data_timezone"].disabled)
         self.assertFalse(form.fields["fetch_offset_minutes"].disabled)
-        self.assertFalse(form.fields["fetch_offset_timezone"].disabled)
 
     def test_fetch_offset_minutes_value_for_addupi(self):
         form = EssentialDataForm(data=self.form_args, **self.form_kwargs)

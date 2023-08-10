@@ -77,15 +77,6 @@ Models
       :attr:`~enhydris.telemetry.models.Telemetry.fetch_offset_minutes`
       counts from midnight.
 
-   .. attribute:: fetch_offset_timezone
-      :type: CharField
-
-      The time zone to which
-      :attr:`~enhydris.telemetry.models.Telemetry.fetch_offset_minutes`
-      refers; a `tz database name`_ such as ``Europe/Athens``.
-
-      .. _tz database name: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-
    .. attribute:: device_locator
       :type: string
 
@@ -125,7 +116,6 @@ Models
       :const:`True` if according to
       :attr:`~enhydris.telemetry.models.Telemetry.fetch_interval_minutes`,
       :attr:`~enhydris.telemetry.models.Telemetry.fetch_offset_minutes`,
-      :attr:`~enhydris.telemetry.models.Telemetry.fetch_offset_timezone`
       and the current system time it's time to fetch data.
 
    .. method:: fetch() -> None
